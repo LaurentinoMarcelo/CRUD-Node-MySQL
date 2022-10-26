@@ -28,13 +28,49 @@ app.post('/books/insertbook', (req, res) => {
 
     const sql = `INSERT INTO books (title, pageqty) VALUES ('${title}', '${pageqty}')`
 
-    conn.query(sql, function (err){
-        if(err) {
+    conn.query(sql, function (err) {
+        if (err) {
             console.log(err)
         }
-        res.redirect('/')
+        res.redirect('/books')
     })
+})
 
+app.get('/books', (req, resp) => {
+    const sql = "SELECT * FROM books"
+
+    conn.query(sql, function (err, data) {
+        if (err) {
+            console.log(err);
+            return
+        }
+
+        const books = data
+
+        console.log(books)
+
+        resp.render('books', { books })
+    })
+})
+
+app.get('/books/:idBooks', (req, resp) => {
+
+    const id = req.params.idBooks
+
+    const sql = `SELECT * FROM books WHERE idBooks =  ${id}`
+
+    conn.query(sql, function (err, data) {
+        if (err) {
+            console.log(err);
+            return
+        }
+
+        const book = data[0]
+
+        console.log(book)
+
+        resp.render('book', { book })
+    })
 })
 
 const conn = mysql.createConnection({
