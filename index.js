@@ -93,6 +93,22 @@ app.get('/books/edit/:idBooks', (req, resp) => {
     })
 })
 
+app.post('/books/updatedbook', (req, res) => {
+
+    const id = req.body.idBooks
+    const title = req.body.title
+    const pageqty = req.body.pageqty
+
+    const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}' WHERE idBooks = ${id}`
+
+    conn.query(sql, function (err) {
+        if (err) {
+            console.log(err)
+        }
+        res.redirect('/books')
+    })
+})
+
 const conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
